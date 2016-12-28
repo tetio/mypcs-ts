@@ -1,0 +1,28 @@
+{
+  "name": "mypcs-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typings": "typings",
+    "build": "tsc --watch",
+    "start": "node ./build/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/body-parser": "0.0.32",
+    "@types/chance": "^0.7.28",
+    "@types/express": "^4.0.32",
+    "@types/lodash": "^4.14.34",
+    "@types/mongoose": "^4.5.33",
+    "bluebird": "^3.4.6",
+    "chance": "^1.0.4",
+    "express": "^4.14.0",
+    "lodash": "^4.17.3",
+    "mongoose": "^4.5.3",
+    "typescript": "^2.0.2"
+  }
+}
