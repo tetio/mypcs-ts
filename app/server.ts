@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import { WelcomeController } from './controllers';
+import { WelcomeController, CompanyController } from './controllers';
 import { config } from "./config";
 
 import mongoose = require('mongoose');
@@ -8,6 +8,11 @@ import mongoose = require('mongoose');
 const app: express.Application = express();
 
 const port: number = process.env.PORT || 3000;
+
+const apiVersion = 'v1';
+const apiPrefix = `/api/${apiVersion}`;
+app.use(`${apiPrefix}/welcome`, WelcomeController);
+app.use(`${apiPrefix}/company`, CompanyController);
 
 app.use('/welcome', WelcomeController);
 

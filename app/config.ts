@@ -1,10 +1,10 @@
 var config = {
   "local": {
-    "MONGO_URI": "mongodb://localhost:27017/lw",
+    "MONGO_URI": "mongodb://localhost:27017/mypcs",
     "MONGO_OPTIONS": {"db": {"safe": true}}
   },
   "development": {
-    "MONGO_URI": "mongodb://192.168.19.99:27000/lw?replicaSet=r1",
+    "MONGO_URI": "mongodb://192.168.19.99:27000/mypcs?replicaSet=r1",
     "MONGO_OPTIONS": {"db": {"safe": true}}
   },
   "production": {

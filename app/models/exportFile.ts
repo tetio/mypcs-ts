@@ -1,6 +1,6 @@
 
 import mongoose = require('mongoose');
-
+import { CompanySchema } from './company'
 interface ExportFile {
     username: string;
     id: number;
@@ -20,15 +20,15 @@ var ExportFileSchema: mongoose.Schema = new mongoose.Schema({
     modifiedOn: {type: Date, required: true},
     fileType: {type: String, required: true},
     fileOwner: {type: String, required: true},
-    shippingAgent: Company.companySchema,
-    freightForwarder: Company.companySchema,
-    containerTerminal: Company.companySchema,
-    containerDepot: Company.companySchema,
-    shipper: {type: Company.companySchema, required: false},
-    consignee: {type: Company.companySchema, required: false},
-    notify: {type: Company.companySchema, required: false},
-    carrier: {type: Company.companySchema, required: false},
-    haulier: {type: Company.companySchema, required: false}
+    shippingAgent: CompanySchema,
+    freightForwarder: CompanySchema,
+    containerTerminal: CompanySchema,
+    containerDepot: CompanySchema,
+    shipper: {type: CompanySchema, required: false},
+    consignee: {type: CompanySchema, required: false},
+    notify: {type: CompanySchema, required: false},
+    carrier: {type: CompanySchema, required: false},
+    haulier: {type: CompanySchema, required: false}
 });
 
 

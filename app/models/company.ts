@@ -1,6 +1,8 @@
 
 import mongoose = require('mongoose');
 
+import { PrimaryContact, PrimaryContactSchema } from './primaryContact'
+
 interface Company {
     code: string;
     name: string;
@@ -15,13 +17,14 @@ interface Company {
     fax: string;
     situation: string;
     lastModification: Date;
+    primaryContact: PrimaryContact;
 }
 
 interface CompanyModel extends Company, mongoose.Document{};
 
 
 
-var CompanySchema: mongoose.Schema = new mongoose.Schema({
+let CompanySchema: mongoose.Schema = new mongoose.Schema({
     code: {type: String, required: true},
     name: {type: String, required: true},
     web: {type: String, required: true},
@@ -34,13 +37,14 @@ var CompanySchema: mongoose.Schema = new mongoose.Schema({
     phone: {type: String, required: true},
     fax: {type: String, required: false},
     situation: {type: String, required: true},
-    lastModification: {type: Date, required: true}
+    lastModification: {type: Date, required: true},
+    primaryContact: PrimaryContactSchema
 });
 
 
 
-var Company = mongoose.model<CompanyModel>('Company', CompanySchema);
+let CompanyDao = mongoose.model<CompanyModel>('Company', CompanySchema);
 
 
 
-export {Company, CompanyModel, CompanySchema};
+export {Company, CompanyDao, CompanyModel, CompanySchema};
