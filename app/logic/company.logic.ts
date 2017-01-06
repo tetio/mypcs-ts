@@ -1,10 +1,10 @@
 import * as Chance from "chance";
 
-import {Company, CompanyDao } from '../models/company';
-import { PrimaryContact, PrimaryContactSchema } from '../models/primaryContact'
+import { Company, CompanyDao } from '../models/company';
+import { PrimaryContact } from '../models/primaryContact'
 
 export function findById(id: string, next: Function) {
-    CompanyDao.findById({_id: id}, (err: any, company: Company) => {
+    CompanyDao.findById({ _id: id }, (err: any, company: Company) => {
         next(err, company);
     });
 }
@@ -48,5 +48,7 @@ function createCompany(next) {
         email: first.toLocaleLowerCase() + '.' + last.toLocaleLowerCase() + '@' + domain
     };
     company.primaryContact = contact;
-    company.save(next);
+    company.save((err: any, company: Company) => {
+        next(err, company);
+    });
 };

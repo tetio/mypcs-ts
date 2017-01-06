@@ -43,7 +43,7 @@ let CompanySchema: mongoose.Schema = new mongoose.Schema({
 
 
 
-let CompanyDao = mongoose.model<CompanyModel>('Company', CompanySchema);
+let CompanyDao = mongoose.model<CompanyModel>('Company', CompanySchema, 'company');
 
 
 

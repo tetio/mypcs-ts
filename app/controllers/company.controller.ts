@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import * as Controller from './controller';
-import * as CompanyLogic  from '../logic/company.logic';
+import * as CompanyLogic from '../logic/company.logic';
 
 const router: Router = Router();
 
