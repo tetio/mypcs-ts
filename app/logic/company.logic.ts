@@ -3,7 +3,7 @@ import * as Chance from "chance";
 import { Company, CompanyDao } from '../models/company';
 import { PrimaryContact } from '../models/primaryContact'
 
-export function findById(id: string, next: Function) {
+export function findById(id: String, next: Function) {
     CompanyDao.findById({ _id: id }, (err: any, company: Company) => {
         next(err, company);
     });

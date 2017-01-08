@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import { WelcomeController, CompanyController } from './controllers';
+import { WelcomeController, CompanyController, ExportFileController } from './controllers';
 import { config } from "./config";
 
 import mongoose = require('mongoose');
@@ -13,8 +13,8 @@ const apiVersion = 'v1';
 const apiPrefix = `/api/${apiVersion}`;
 app.use(`${apiPrefix}/welcome`, WelcomeController);
 app.use(`${apiPrefix}/company`, CompanyController);
+app.use(`${apiPrefix}/exportfile`, ExportFileController);
 
-app.use('/welcome', WelcomeController);
 
 app.listen(port, () => {
 

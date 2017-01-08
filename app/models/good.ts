@@ -1,34 +1,32 @@
 import mongoose = require('mongoose');
 
 interface GoodPackage {
-    quantity: Number,
-    code: String;
-    description: String;
+    quantity: number,
+    code: string;
+    description: string;
 }
 
 interface GoodTemperature {
-    unit: String;
-    max: Number;
-    min: Number;
+    unit: string;
+    max: number;
+    min: number;
 }
 
 interface GoodVolume {
-    unit: String;
-    value: Number;
+    unit: string;
+    value: number;
 }
 
 interface Good {
-    taricCode: String;
-    description: String;
+    taricCode: string;
+    description: string;
     package: GoodPackage;
-    unitGrossWight: String;
-    total_gross_weight: String;
-    unitNetWeight: String;
-    totalNetWeight: String;
-    marks: [{ type: String }];
-    temperature: GoodTemperature;
-    volume: GoodVolume;
-    situation: String;
+    unitGrossWeight: string;
+    totalGrossWeight: number;
+    marks: [string];
+//    temperature: GoodTemperature;
+//    volume: GoodVolume;
+    situation: string;
 }
 
 let GoodSchema: mongoose.Schema = new mongoose.Schema({

@@ -1,24 +1,25 @@
 import mongoose = require('mongoose');
-import {Company, CompanySchema } from './company'
+import { Company, CompanySchema } from './company'
 import { Equipment, EquipmentSchema } from './equipment'
 import { Good, GoodSchema } from './good'
-import { SplitGoodPlacement, SplitGoodPlacementSchema } from './splitGoodPlacement'
+import { SplitGoodsPlacement, SplitGoodsPlacementSchema } from './splitGoodsPlacement'
 
 interface BookingInfo {
-    bookingNumber: String;
+    bookingNumber: string;
     requestedOn: Date;
-    notifiedOn: Date;    
+    notifiedOn: Date;
 }
 
 interface FreightForwarderInfo {
-
+    dossierReference: string;
+    bookingObservations: string;
 }
 
 interface ExportFile {
     createdOn: Date;
     modifiedOn: Date;
-    fileType: String;
-    fileOwner: String;
+    fileType: string;
+    fileOwner: string;
     shippingAgent: Company,
     freightForwarder: Company,
     containerTerminal: Company,
@@ -29,13 +30,10 @@ interface ExportFile {
     carrier: Company;
     haulier: Company;
     bookingInfo: BookingInfo;
-    freightForwarderInfo: {
-        dossierReference: { type: String, required: false },
-        bookingObservations: { type: String, required: false }
-    },
+    freightForwarderInfo: FreightForwarderInfo;
     equipments: [Equipment],
     goods: [Good],
-    splitGoodsPlacement: [SplitGoodPlacement]
+    splitGoodsPlacement: [SplitGoodsPlacement]
 }
 
 interface ExportFileModel extends ExportFile, mongoose.Document { };
@@ -67,7 +65,7 @@ var ExportFileSchema: mongoose.Schema = new mongoose.Schema({
     },
     equipments: [EquipmentSchema],
     goods: [GoodSchema],
-    splitGoodsPlacement: [SplitGoodPlacementSchema]
+    splitGoodsPlacement: [SplitGoodsPlacementSchema]
 });
 
 let ExportFileDao = mongoose.model<ExportFileModel>('ExportFile', ExportFileSchema);
