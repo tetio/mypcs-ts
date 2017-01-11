@@ -36,5 +36,9 @@ router.post('/create', (req: Request, res: Response) => {
     ExportFileLogic.createRandom(Controller.handleResult.bind(null, res));
 });
 
+router.post('/equipment', (req: Request, res: Response) => {
+    let payload: ExportFileLogic.EquipmentPayload = req.body;
+    ExportFileLogic.addEquipment(payload, Controller.handleResult.bind(null, res));
+});
 
 export const ExportFileController: Router = router;

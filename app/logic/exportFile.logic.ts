@@ -1,6 +1,7 @@
 
 import * as Chance from "chance";
 import * as Promise from "bluebird";
+import { ObjectID } from "mongodb";
 
 import { ExportFile, ExportFileDao, BookingInfo } from '../models/exportFile';
 import { Company, CompanyDao } from '../models/company';
@@ -21,7 +22,10 @@ interface QueryCriteriaExportFile extends CriteriaExportFile {
     bookingInfo: BookingInfo;
 }
 
-
+export interface EquipmentPayload {
+    exportFileId: string;
+    equipment: Equipment;
+}
 
 
 export function findByCriteria(criteria: CriteriaExportFile, next: Function) {
@@ -41,7 +45,7 @@ export function findByCriteria(criteria: CriteriaExportFile, next: Function) {
         queryCriteria.modifiedAt = {
             $gt: criteria.since
         }
-    } 
+    }
     ExportFileDao.find(queryCriteria).limit(10).exec((err: any, exportFiles: [ExportFile]) => {
         next(err, exportFiles);
     });
@@ -77,8 +81,8 @@ export function createRandom(next: Function) {
     let chance = new Chance();
     let exportFile = new ExportFileDao();
     countCompanies().then((count: number) => {
-        Promise.join(findOneCompany(count), findOneCompany(count), findOneCompany(count), findOneCompany(count), 
-        (forwarder: Company, shippingAgent: Company, terminal: Company, depot: Company) => {
+        Promise.join(findOneCompany(count), findOneCompany(count), findOneCompany(count), findOneCompany(count),
+            (forwarder: Company, shippingAgent: Company, terminal: Company, depot: Company) => {
 
                 // Agents
                 exportFile.shippingAgent = shippingAgent;
@@ -170,7 +174,7 @@ export function createRandom(next: Function) {
                 exportFile.modifiedAt = exportFile.createdAt;
                 exportFile.fileType = 'EF_FF';
                 exportFile.fileOwner = exportFile.freightForwarder.code;
-                exportFile.save(function (err) {
+                exportFile.save((err:any) => {
                     if (err) {
                         next(err);
                     }
@@ -181,31 +185,18 @@ export function createRandom(next: Function) {
 };
 
 
-// export function addEquipment(payload: any, next: Function) {
-// //        var objectId = new ObjectID(exportfileId);
-//         var objectId = new ObjectID(payload.exportfileId);
-//         var query = { _id: objectId };
-//         var update = { $push: { equipments: payload.equipment } };
-//         ExportFileDao.findAndModify(query, [], update, { 'new': true })
-//             .then(function (exportFile) {
-//                 next(null, exportFile);
-//             });
-//     };
-
-
-
-
-
-
-
-
-
-
-
+export function addEquipment(payload: EquipmentPayload, next: Function) {
+    let objectId = new ObjectID(payload.exportFileId);
+    let query = { _id: objectId };
+    let update = { $push: { equipments: payload.equipment } };
+    ExportFileDao.findOneAndUpdate(query, update, { 'new': true }, (error: any, exportFile: ExportFile) => {
+        next(error, exportFile);
+    });
+};
 
 
 function countCompanies() {
-    return new Promise((resolve: Promise.Resolve, reject:Promise.Resolve) => {
+    return new Promise((resolve: Promise.Resolve, reject: Promise.Resolve) => {
         CompanyDao.count({}, function (err, count) {
             if (err) {
                 reject(err);
@@ -216,7 +207,7 @@ function countCompanies() {
 }
 
 function findOneCompany(count: number) {
-    return new Promise((resolve: Promise.Resolve, reject:Promise.Resolve) => {
+    return new Promise((resolve: Promise.Resolve, reject: Promise.Resolve) => {
         let rand = Math.floor(Math.random() * count);
         CompanyDao.findOne().skip(rand).exec(function (err, company) {
             if (err) {
