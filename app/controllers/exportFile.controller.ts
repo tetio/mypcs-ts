@@ -1,8 +1,19 @@
 import { Router, Request, Response } from 'express';
+import * as bodyParser from "body-parser";
+
 import * as Controller from './controller';
 import * as ExportFileLogic from '../logic/exportFile.logic';
 
 const router: Router = Router();
+
+router.use(bodyParser.json());
+
+// router.use((req: Request, res: Response, next: Function) => {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers",
+//         "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+// });
 
 router.get('/:id', (req: Request, res: Response) => {
     let {id} = req.params;
@@ -12,6 +23,12 @@ router.get('/:id', (req: Request, res: Response) => {
 
 router.get('/', (req: Request, res: Response) => {
     ExportFileLogic.find(Controller.handleResult.bind(null, res));
+});
+
+
+router.post('/find', (req: Request, res: Response) => {
+    let criteria = req.body;
+    ExportFileLogic.findByCriteria(criteria, Controller.handleResult.bind(null, res));
 });
 
 

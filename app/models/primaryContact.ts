@@ -4,7 +4,7 @@ import mongoose = require('mongoose');
 interface PrimaryContact {
       firstName: string;
       lastName: String;
-      mobile: String;
+      mobile?: String;
       email: String;
 }
 

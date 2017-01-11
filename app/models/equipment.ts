@@ -26,8 +26,8 @@ interface Equipment {
     totalGrossWeight: number;
     unitNetWeight: string;
     totalNetWeight: number;
-    events: EquimentEvents;
-//    reeferInfo: EquimentReeferInfo;
+    events?: EquimentEvents;
+    reeferInfo?: EquimentReeferInfo;
 
 }
 

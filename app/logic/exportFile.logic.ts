@@ -2,22 +2,23 @@
 import * as Chance from "chance";
 import * as Promise from "bluebird";
 
-import { ExportFile, ExportFileDao } from '../models/exportFile';
+import { ExportFile, ExportFileDao, BookingInfo } from '../models/exportFile';
 import { Company, CompanyDao } from '../models/company';
 import { Equipment, EquimentEvents } from '../models/equipment';
 import { Good, GoodPackage } from '../models/good';
 import { SplitGoodsPlacement } from '../models/splitGoodsPlacement';
 
-interface CriteriaExportFile {
-    file_owner: String;
-    booking_number: String;
-    equipment_number: String;
+export interface CriteriaExportFile {
+    fileOwner: string;
+    bookingNumber: string;
+    equipmentNumber: string;
     since: Date;
 }
 
 
 interface QueryCriteriaExportFile extends CriteriaExportFile {
-    modified_at: any;
+    modifiedAt: any;
+    bookingInfo: BookingInfo;
 }
 
 
@@ -25,25 +26,23 @@ interface QueryCriteriaExportFile extends CriteriaExportFile {
 
 export function findByCriteria(criteria: CriteriaExportFile, next: Function) {
     let queryCriteria = <QueryCriteriaExportFile>{};
-    if (criteria.file_owner !== undefined) {
-        queryCriteria.file_owner = criteria.file_owner;
+    if (criteria.fileOwner !== undefined) {
+        queryCriteria.fileOwner = criteria.fileOwner;
     }
-    if (criteria.booking_number !== undefined) {
-        queryCriteria['bookingInfo.bookingNumber'] = criteria.booking_number;
-    }
-    if (criteria.equipment_number !== undefined) {
-        queryCriteria['equipments.number'] = criteria.equipment_number;
-    }
-    if (criteria.since !== undefined) {
-        queryCriteria.modified_at = {
-            $gt: criteria.since
-        }
-    } else {
-        queryCriteria.modified_at = {
-            $lt: new Date()
+    if (criteria.bookingNumber !== undefined) {
+        queryCriteria.bookingInfo = <BookingInfo>{
+            bookingNumber: criteria.bookingNumber
         };
     }
-    ExportFileDao.find(queryCriteria).limit(10).exec((err: any, exportFiles: ExportFile[]) => {
+    if (criteria.equipmentNumber !== undefined) {
+        queryCriteria.equipmentNumber = criteria.equipmentNumber;
+    }
+    if (criteria.since !== undefined) {
+        queryCriteria.modifiedAt = {
+            $gt: criteria.since
+        }
+    } 
+    ExportFileDao.find(queryCriteria).limit(10).exec((err: any, exportFiles: [ExportFile]) => {
         next(err, exportFiles);
     });
 }
@@ -56,7 +55,7 @@ export function findById(id: String, next: Function) {
 };
 
 export function find(next: Function) {
-    ExportFileDao.find().limit(20).exec((err: any, exportFiles: ExportFile[]) => {
+    ExportFileDao.find().limit(20).exec((err: any, exportFiles: [ExportFile]) => {
         next(err, exportFiles);
     });
 };
@@ -65,8 +64,8 @@ export function find(next: Function) {
 export function create(fileOwner: string, bookingNumber: string, next: Function) {
     let exportFile = new ExportFileDao();//<ExportFile>{};
     exportFile.fileOwner = fileOwner;
-    exportFile.createdOn = new Date();
-    exportFile.modifiedOn = exportFile.createdOn;
+    exportFile.createdAt = new Date();
+    exportFile.modifiedAt = exportFile.createdAt;
     exportFile.bookingInfo.bookingNumber = bookingNumber;
     exportFile.save((err: any, exportFile: ExportFile) => {
         next(err, exportFile);
@@ -78,21 +77,17 @@ export function createRandom(next: Function) {
     let chance = new Chance();
     let exportFile = new ExportFileDao();
     countCompanies().then((count: number) => {
-        Promise.join(findOneCompany(count), findOneCompany(count), findOneCompany(count), findOneCompany(count),
-            function (forwarder, shippingAgent, terminal, depot) {
-                /*                    exportFile.shippingAgent = company2Nad(shippingAgent);
-                                    exportFile.freightForwarder = company2Nad(forwarder);
-                                    exportFile.containerTerminal = company2Nad(terminal);
-                                    exportFile.containerDepot = company2Nad(depot);
-                */
+        Promise.join(findOneCompany(count), findOneCompany(count), findOneCompany(count), findOneCompany(count), 
+        (forwarder: Company, shippingAgent: Company, terminal: Company, depot: Company) => {
+
+                // Agents
                 exportFile.shippingAgent = shippingAgent;
                 exportFile.freightForwarder = forwarder;
                 exportFile.containerTerminal = terminal;
                 exportFile.containerDepot = depot;
 
-
                 // equipments
-                var numEquip = Math.floor(Math.random() * 4) + 1;
+                let numEquip = Math.floor(Math.random() * 4) + 1;
                 console.log('numEquip=' + numEquip);
                 for (var i = 0; i < numEquip; i++) {
                     let equipment = <Equipment>{
@@ -125,7 +120,7 @@ export function createRandom(next: Function) {
                 }
                 // Goods
                 for (var j = 0; j < numEquip; j++) {
-                    var good = <Good>{
+                    let good = <Good>{
                         id: j,
                         taricCode: '' + chance.integer({
                             min: 5000000,
@@ -139,8 +134,8 @@ export function createRandom(next: Function) {
                         },
                         situation: 'A',
                         splitGoodsPlacement: [],
-                        unitGrossWeight: 'KG',
-                        totalGrossWeight: chance.integer({
+                        unitNetWeight: 'KG',
+                        totalNetWeight: chance.integer({
                             min: 12000,
                             max: 12999
                         }),
@@ -171,8 +166,8 @@ export function createRandom(next: Function) {
                     requestedOn: new Date(),
                     notifiedOn: new Date(),
                 };
-                exportFile.createdOn = new Date();
-                exportFile.modifiedOn = exportFile.createdOn;
+                exportFile.createdAt = new Date();
+                exportFile.modifiedAt = exportFile.createdAt;
                 exportFile.fileType = 'EF_FF';
                 exportFile.fileOwner = exportFile.freightForwarder.code;
                 exportFile.save(function (err) {
@@ -185,8 +180,32 @@ export function createRandom(next: Function) {
     });
 };
 
+
+// export function addEquipment(payload: any, next: Function) {
+// //        var objectId = new ObjectID(exportfileId);
+//         var objectId = new ObjectID(payload.exportfileId);
+//         var query = { _id: objectId };
+//         var update = { $push: { equipments: payload.equipment } };
+//         ExportFileDao.findAndModify(query, [], update, { 'new': true })
+//             .then(function (exportFile) {
+//                 next(null, exportFile);
+//             });
+//     };
+
+
+
+
+
+
+
+
+
+
+
+
+
 function countCompanies() {
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve: Promise.Resolve, reject:Promise.Resolve) => {
         CompanyDao.count({}, function (err, count) {
             if (err) {
                 reject(err);
@@ -197,7 +216,7 @@ function countCompanies() {
 }
 
 function findOneCompany(count: number) {
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve: Promise.Resolve, reject:Promise.Resolve) => {
         let rand = Math.floor(Math.random() * count);
         CompanyDao.findOne().skip(rand).exec(function (err, company) {
             if (err) {

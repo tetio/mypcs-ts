@@ -21,11 +21,13 @@ interface Good {
     taricCode: string;
     description: string;
     package: GoodPackage;
-    unitGrossWeight: string;
-    totalGrossWeight: number;
+    unitGrossWeight?: string;
+    totalGrossWeight?: number;
+    unitNetWeight: string;
+    totalNetWeight: number;    
     marks: [string];
-//    temperature: GoodTemperature;
-//    volume: GoodVolume;
+    temperature?: GoodTemperature;
+    volume?: GoodVolume;
     situation: string;
 }
 

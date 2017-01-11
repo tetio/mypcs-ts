@@ -1,17 +1,17 @@
 import mongoose = require('mongoose');
 
 interface HazardCode {
-    identificationCode: String
-    additionalClassificationIdentifier: String;
-    codeVersionIdentifier: String;
+    identificationCode: string
+    additionalClassificationIdentifier: string;
+    codeVersionIdentifier: string;
 }
 
 interface DangerousGood {
     hazardCode: HazardCode;
-    unitedNationsIdentifier: String;
-    packagingDangerLevelCode: { type: String };
-    emergencyProcedureForShipsIdentifier: { type: String };
-    description: { type: String };    
+    unitedNationsIdentifier: string;
+    packagingDangerLevelCode: string;
+    emergencyProcedureForShipsIdentifier: string;
+    description: string;    
 }
 
 let DangerousGoodSchema: mongoose.Schema = new mongoose.Schema({

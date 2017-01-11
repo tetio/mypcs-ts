@@ -1,4 +1,4 @@
-var config = {
+let config = {
   "local": {
     "MONGO_URI": "mongodb://localhost:27017/mypcs",
     "MONGO_OPTIONS": {"db": {"safe": true}}

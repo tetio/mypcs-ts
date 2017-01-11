@@ -6,8 +6,8 @@ import { SplitGoodsPlacement, SplitGoodsPlacementSchema } from './splitGoodsPlac
 
 interface BookingInfo {
     bookingNumber: string;
-    requestedOn: Date;
-    notifiedOn: Date;
+    requestedOn?: Date;
+    notifiedOn?: Date;
 }
 
 interface FreightForwarderInfo {
@@ -16,8 +16,8 @@ interface FreightForwarderInfo {
 }
 
 interface ExportFile {
-    createdOn: Date;
-    modifiedOn: Date;
+    createdAt: Date;
+    modifiedAt: Date;
     fileType: string;
     fileOwner: string;
     shippingAgent: Company,
@@ -39,8 +39,8 @@ interface ExportFile {
 interface ExportFileModel extends ExportFile, mongoose.Document { };
 
 var ExportFileSchema: mongoose.Schema = new mongoose.Schema({
-    createdOn: { type: Date, required: true },
-    modifiedOn: { type: Date, required: true },
+    createdAt: { type: Date, required: true },
+    modifiedAt: { type: Date, required: true },
     fileType: { type: String, required: true },
     fileOwner: { type: String, required: true },
     shippingAgent: CompanySchema,
@@ -70,4 +70,4 @@ var ExportFileSchema: mongoose.Schema = new mongoose.Schema({
 
 let ExportFileDao = mongoose.model<ExportFileModel>('ExportFile', ExportFileSchema);
 
-export { ExportFile, ExportFileDao, ExportFileModel, ExportFileSchema };
+export { ExportFile, BookingInfo, ExportFileDao, ExportFileModel, ExportFileSchema };
