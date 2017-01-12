@@ -18,6 +18,7 @@ interface Company {
     situation: string;
     lastModification: Date;
     primaryContact: PrimaryContact;
+    users?: [string]
 }
 
 interface CompanyModel extends Company, mongoose.Document{};
@@ -38,7 +39,8 @@ let CompanySchema: mongoose.Schema = new mongoose.Schema({
     fax: {type: String, required: false},
     situation: {type: String, required: true},
     lastModification: {type: Date, required: true},
-    primaryContact: PrimaryContactSchema
+    primaryContact: PrimaryContactSchema,
+    users: {type: String, required: false},
 });
 
 

@@ -38,7 +38,7 @@ interface ExportFile {
 
 interface ExportFileModel extends ExportFile, mongoose.Document { };
 
-var ExportFileSchema: mongoose.Schema = new mongoose.Schema({
+let ExportFileSchema: mongoose.Schema = new mongoose.Schema({
     createdAt: { type: Date, required: true },
     modifiedAt: { type: Date, required: true },
     fileType: { type: String, required: true },
