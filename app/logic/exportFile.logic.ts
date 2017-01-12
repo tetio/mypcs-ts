@@ -195,10 +195,14 @@ export function addEquipment(payload: EquipmentPayload, next: Function) {
 };
 
 export function removeEquipment(payload: EquipmentPayload, next: Function) {
-    // TODO pull SPG entries.
     let objectId = new ObjectID(payload.exportFileId);
     let query = { _id: objectId };
-    let update = { $pull: { equipments: { number: payload.equipment.number } } };
+    let update = { 
+        $pull: { 
+          equipments: { number: payload.equipment.number },
+          splitGoodsPlacement: { equipmentNumber: payload.equipment.number } 
+        } 
+    };
     ExportFileDao.update(query, update, {'multi': true}, (error: any, exportFile: ExportFile) => {
         next(error, exportFile);
     });
