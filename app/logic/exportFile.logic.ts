@@ -66,7 +66,7 @@ export function find(next: Function) {
 
 
 export function create(fileOwner: string, bookingNumber: string, next: Function) {
-    let exportFile = new ExportFileDao();//<ExportFile>{};
+    let exportFile = new ExportFileDao();
     exportFile.fileOwner = fileOwner;
     exportFile.createdAt = new Date();
     exportFile.modifiedAt = exportFile.createdAt;
@@ -122,15 +122,16 @@ export function createRandom(next: Function) {
                     };
                     exportFile.equipments.push(equipment);
                 }
-                // Goods
-                for (var j = 0; j < numEquip; j++) {
+                // Goods only two
+                for (var j = 0; j < 2; j++) {
                     let good = <Good>{
-                        id: j,
+                        //id: j,
+                        customerRef: `REF${j}`,
                         taricCode: '' + chance.integer({
                             min: 5000000,
                             max: 9999999
                         }),
-                        description: "TEXTILES_" + j,
+                        description: `TEXTIL_${j}`,
                         package: {
                             quantity: j + 10,
                             code: 'BR',
@@ -145,19 +146,12 @@ export function createRandom(next: Function) {
                         }),
                         marks: ['']
                     };
-                    // var sgp = {
-                    //         good_id: j,
-                    //         equipment_number: exportFile.equipments[j].number,
-                    //         pacjage_quantity: (j + 20),
-                    //         gross_weight: (22000 + (j+20) * 10),
-                    //         _id: exportFile.equipments[j]._id
-                    // };
-                    // good.split_goods_placement.push(sgp);
                     exportFile.goods.push(good);
                 }
                 // split_goods_placement
                 for (var k = 0; k < numEquip; k++) {
                     let sgp = <SplitGoodsPlacement>{
+                        customerRef: exportFile.goods[k%2].customerRef,
                         equipmentNumber: exportFile.equipments[k].number,
                         packageQuantity: (k + 20),
                         grossWeight: (22000 + (k + 20) * 10)
@@ -194,6 +188,7 @@ export function addEquipment(payload: EquipmentPayload, next: Function) {
     });
 };
 
+
 export function removeEquipment(payload: EquipmentPayload, next: Function) {
     let objectId = new ObjectID(payload.exportFileId);
     let query = { _id: objectId };
@@ -219,6 +214,7 @@ function countCompanies() {
         });
     });
 }
+
 
 function findOneCompany(count: number) {
     return new Promise((resolve: Promise.Resolve, reject: Promise.Resolve) => {
