@@ -41,4 +41,10 @@ router.post('/equipment', (req: Request, res: Response) => {
     ExportFileLogic.addEquipment(payload, Controller.handleResult.bind(null, res));
 });
 
+router.delete('/equipment', (req: Request, res: Response) => {
+    let payload: ExportFileLogic.EquipmentPayload = req.body;
+    ExportFileLogic.removeEquipment(payload, Controller.handleResult.bind(null, res));
+});
+
+
 export const ExportFileController: Router = router;

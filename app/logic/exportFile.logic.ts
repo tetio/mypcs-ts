@@ -174,7 +174,7 @@ export function createRandom(next: Function) {
                 exportFile.modifiedAt = exportFile.createdAt;
                 exportFile.fileType = 'EF_FF';
                 exportFile.fileOwner = exportFile.freightForwarder.code;
-                exportFile.save((err:any) => {
+                exportFile.save((err: any) => {
                     if (err) {
                         next(err);
                     }
@@ -190,6 +190,16 @@ export function addEquipment(payload: EquipmentPayload, next: Function) {
     let query = { _id: objectId };
     let update = { $push: { equipments: payload.equipment } };
     ExportFileDao.findOneAndUpdate(query, update, { 'new': true }, (error: any, exportFile: ExportFile) => {
+        next(error, exportFile);
+    });
+};
+
+export function removeEquipment(payload: EquipmentPayload, next: Function) {
+    // TODO pull SPG entries.
+    let objectId = new ObjectID(payload.exportFileId);
+    let query = { _id: objectId };
+    let update = { $pull: { equipments: { number: payload.equipment.number } } };
+    ExportFileDao.update(query, update, {'multi': true}, (error: any, exportFile: ExportFile) => {
         next(error, exportFile);
     });
 };
