@@ -1,0 +1,42 @@
+{
+    "name": "console",
+    "description": "Administration console",
+    "createdOn": "2017-01-13T12:13:13.000Z",
+    "createdById": "mypcs",
+    "roles": [
+        {
+            "roleId": "admin",
+            "createdOn": "2017-01-13T12:13:13.000Z",
+            "createdById": "mypcs"
+        },
+        {
+            "roleId": "readOnly",
+            "createdOn": "2017-01-13T12:13:13.000Z",
+            "createdById": "mypcs"
+        }
+    ]
+}
+{
+    "name": "forwarding",
+    "description": "Application for forwarders",
+    "createdOn": "2017-01-13T12:13:13.000Z",
+    "createdById": "mypcs",
+    "roles": [
+        {
+            "roleId": "import",
+            "createdOn": "2017-01-13T12:13:13.000Z",
+            "createdById": "mypcs"
+        },
+        {
+            "roleId": "export",
+            "createdOn": "2017-01-13T12:13:13.000Z",
+            "createdById": "mypcs"
+        },
+        {
+            "roleId": "custume",
+            "createdOn": "2017-01-13T12:13:13.000Z",
+            "createdById": "mypcs"
+        }
+    ]
+}
+

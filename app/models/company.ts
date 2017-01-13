@@ -40,7 +40,7 @@ let CompanySchema: mongoose.Schema = new mongoose.Schema({
     situation: {type: String, required: true},
     lastModification: {type: Date, required: true},
     primaryContact: PrimaryContactSchema,
-    users: {type: String, required: false},
+    users: {type: [String], required: false},
 });
 
 
