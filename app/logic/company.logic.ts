@@ -1,7 +1,6 @@
 import * as Chance from "chance";
 
-import { Company, CompanyDao } from '../models/company';
-import { PrimaryContact } from '../models/primaryContact'
+import { Company, CompanyDao, PrimaryContact } from '../models/company';
 
 
 export function findById(id: String, next: Function) {

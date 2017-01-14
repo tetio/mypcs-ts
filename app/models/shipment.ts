@@ -2,18 +2,18 @@ import mongoose = require('mongoose');
 import { Company, CompanySchema } from './company'
 
 interface Shipment {
-  isactive: boolean,
-  customerRef: { type: String, required: true },
-  name: { type: String, required: true }
-  remarks: string,
-  delegation: string,
-  attachmentId: string,
-  customer: Company,
-  salesrepresentativeId: string,
-  createdAt: Date,
-  updatedAt: Date,
-  createdById: string,
-  updatedById: string    
+  isactive: boolean;
+  customerRef: string;
+  name:string;
+  remarks: string;
+  delegation: string;
+  attachmentId: string;
+  customer: Company;
+  salesrepresentativeId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  createdById: string;
+  updatedById: string;    
 }
 
 

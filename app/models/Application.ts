@@ -19,16 +19,18 @@ interface ApplicationRole {
 
 interface ApplicationModel extends Application, mongoose.Document { };
 
+let ApplicationRoleSchema: mongoose.Schema = new mongoose.Schema({
+  roleId: { type: String, required: true },
+  createdOn: { type: Date, required: true },
+  createdById: { type: String, required: true }    
+});
+
 let ApplicationSchema: mongoose.Schema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   createdOn: { type: Date, required: true },
   createdById: { type: String, required: true },
-  roles: {type: [{
-    roleId: { type: String, required: true },
-    createdOn: { type: Date, required: true },
-    createdById: { type: String, required: true }    
-  }], required: false} 
+  roles: {type: [ApplicationRoleSchema], required: false} 
 });
 
 

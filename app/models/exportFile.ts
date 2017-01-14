@@ -38,6 +38,19 @@ interface ExportFile {
 
 interface ExportFileModel extends ExportFile, mongoose.Document { };
 
+let BookingInfoSchema: mongoose.Schema = new mongoose.Schema({
+    bookingNumber: { type: String, required: true },
+    requestedOn: { type: Date, required: false },
+    notifiedOn: { type: Date, required: false }
+});
+
+
+let FreightForwarderInfoSchema: mongoose.Schema = new mongoose.Schema({
+    dossierReference: { type: String, required: false },
+    bookingObservations: { type: String, required: false }
+});
+
+
 let ExportFileSchema: mongoose.Schema = new mongoose.Schema({
     createdAt: { type: Date, required: true },
     modifiedAt: { type: Date, required: true },
