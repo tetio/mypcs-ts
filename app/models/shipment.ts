@@ -1,35 +1,41 @@
 import mongoose = require('mongoose');
-import { Company, CompanySchema } from './company'
+import { Company, CompanySchema } from './company';
+import { SplitGoodsPlacement, SplitGoodsPlacementSchema } from './splitGoodsPlacement'
+import { Good, GoodPackage, GoodSchema } from '../models/good';
 
 interface Shipment {
-  isactive: boolean;
+  state: string;
   customerRef: string;
   name:string;
-  remarks: string;
-  delegation: string;
-  attachmentId: string;
+  remarks?: string;
+  delegation: Company;
+  attachmentId?: string;
   customer: Company;
-  salesrepresentativeId: string;
+  salesrepresentativeId?: string;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
   createdById: string;
-  updatedById: string;    
+  updatedById?: string;
+  goods: [Good],
+  splitGoodsPlacement?: [SplitGoodsPlacement];    
 }
 
 
 let ShipmentSchema: mongoose.Schema = new mongoose.Schema({
-  isactive: { type: String, required: true },
+  state: { type: String, required: true },
   customerRef: { type: Date, required: true },
   name: { type: String, required: true },
-  remarks: { type: String, required: true },
-  delegationId: { type: String, required: true },
-  attachmentId: { type: String, required: true },
+  remarks: { type: String, required: false },
+  delegation: { type: CompanySchema, required: true },
+  attachmentId: { type: String, required: false },
   customer: { type: CompanySchema, required: true },
-  salesrepresentativeId: { type: String, required: true },
+  salesrepresentativeId: { type: String, required: false },
   createdAt: { type: Date, required: true },
   updatedAt: { type: Date, required: true },
   createdBy: { type: String, required: true },
-  updatedBy: { type: String, required: true }
+  updatedBy: { type: String, required: true },
+  goods: { type: [GoodSchema], required: true },
+  splitGoodsPlacement: { type: [SplitGoodsPlacementSchema], required: true }
 });
 
 

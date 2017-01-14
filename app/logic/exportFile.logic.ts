@@ -6,8 +6,10 @@ import { ObjectID } from "mongodb";
 import { ExportFile, ExportFileDao, BookingInfo } from '../models/exportFile';
 import { Company, CompanyDao } from '../models/company';
 import { Equipment, EquimentEvents } from '../models/equipment';
-import { Good, GoodPackage } from '../models/good';
 import { SplitGoodsPlacement } from '../models/splitGoodsPlacement';
+import { Shipment } from '../models/shipment';
+import { Good, GoodPackage } from '../models/good';
+
 
 export interface CriteriaExportFile {
     fileOwner: string;
@@ -75,6 +77,8 @@ export function create(fileOwner: string, bookingNumber: string, next: Function)
         next(err, exportFile);
     });
 };
+
+
 
 
 export function createRandom(next: Function) {
@@ -177,6 +181,20 @@ export function createRandom(next: Function) {
             });
     });
 };
+
+function createShipmentRandom(seqNum: number, customer: Company, delegation: Company, splitGoodsPlacement: [SplitGoodsPlacement]) {
+    let shipment = <Shipment>{
+        state: 'OPEN',
+        customerRef: `G-REF-${seqNum}`,
+        name: 'EINES',
+        delegation: delegation,
+        customer: customer,
+        createdAt: new Date(),
+        createdById: 'jsmith',
+        splitGoodsPlacement: splitGoodsPlacement
+    };
+    return shipment;
+}
 
 
 export function addEquipment(payload: EquipmentPayload, next: Function) {
