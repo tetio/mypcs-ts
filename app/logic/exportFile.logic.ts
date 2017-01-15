@@ -85,8 +85,8 @@ export function createRandom(next: Function) {
     let chance = new Chance();
     let exportFile = new ExportFileDao();
     countCompanies().then((count: number) => {
-        Promise.join(findOneCompany(count), findOneCompany(count), findOneCompany(count), findOneCompany(count),
-            (forwarder: Company, shippingAgent: Company, terminal: Company, depot: Company) => {
+        Promise.join(findOneCompany(count), findOneCompany(count), findOneCompany(count), findOneCompany(count), findOneCompany(count),
+            (customer: Company, forwarder: Company, shippingAgent: Company, terminal: Company, depot: Company) => {
 
                 // Agents
                 exportFile.shippingAgent = shippingAgent;
@@ -126,6 +126,7 @@ export function createRandom(next: Function) {
                     };
                     exportFile.equipments.push(equipment);
                 }
+                let shipment = createShipmentRandom(1, customer, forwarder);
                 // Goods only two
                 for (var j = 0; j < 2; j++) {
                     let good = <Good>{
@@ -150,19 +151,19 @@ export function createRandom(next: Function) {
                         }),
                         marks: ['']
                     };
-                    exportFile.goods.push(good);
+                    shipment.goods.push(good);
                 }
                 // split_goods_placement
                 for (var k = 0; k < numEquip; k++) {
                     let sgp = <SplitGoodsPlacement>{
-                        customerRef: exportFile.goods[k%2].customerRef,
+                        // customerRef: shipment.goods[k%2].customerRef,
                         equipmentNumber: exportFile.equipments[k].number,
                         packageQuantity: (k + 20),
                         grossWeight: (22000 + (k + 20) * 10)
                     };
-                    exportFile.splitGoodsPlacement.push(sgp);
+                    shipment.splitGoodsPlacement.push(sgp);
                 }
-
+                exportFile.shipments.push(shipment);
                 exportFile.bookingInfo = {
                     bookingNumber: 'BK-' + chance.postal().replace(' ', ''),
                     requestedOn: new Date(),
@@ -182,7 +183,7 @@ export function createRandom(next: Function) {
     });
 };
 
-function createShipmentRandom(seqNum: number, customer: Company, delegation: Company, splitGoodsPlacement: [SplitGoodsPlacement]) {
+function createShipmentRandom(seqNum: number, customer: Company, delegation: Company) {
     let shipment = <Shipment>{
         state: 'OPEN',
         customerRef: `G-REF-${seqNum}`,
@@ -190,8 +191,9 @@ function createShipmentRandom(seqNum: number, customer: Company, delegation: Com
         delegation: delegation,
         customer: customer,
         createdAt: new Date(),
-        createdById: 'jsmith',
-        splitGoodsPlacement: splitGoodsPlacement
+        createdBy: 'jsmith',
+        goods: [],
+        splitGoodsPlacement: []
     };
     return shipment;
 }

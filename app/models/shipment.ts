@@ -14,8 +14,8 @@ interface Shipment {
   salesrepresentativeId?: string;
   createdAt: Date;
   updatedAt?: Date;
-  createdById: string;
-  updatedById?: string;
+  createdBy: string;
+  updatedBy?: string;
   goods: [Good],
   splitGoodsPlacement?: [SplitGoodsPlacement];    
 }
@@ -31,9 +31,9 @@ let ShipmentSchema: mongoose.Schema = new mongoose.Schema({
   customer: { type: CompanySchema, required: true },
   salesrepresentativeId: { type: String, required: false },
   createdAt: { type: Date, required: true },
-  updatedAt: { type: Date, required: true },
+  updatedAt: { type: Date, required: false },
   createdBy: { type: String, required: true },
-  updatedBy: { type: String, required: true },
+  updatedBy: { type: String, required: false },
   goods: { type: [GoodSchema], required: true },
   splitGoodsPlacement: { type: [SplitGoodsPlacementSchema], required: true }
 });
