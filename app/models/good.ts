@@ -18,6 +18,7 @@ interface GoodVolume {
 }
 
 interface Good {
+    ref: string,
     taricCode: string;
     description: string;
     package: GoodPackage;
@@ -32,6 +33,7 @@ interface Good {
 }
 
 let GoodSchema: mongoose.Schema = new mongoose.Schema({
+    ref: { type: String, required: true },
     taricCode: { type: String, required: true },
     description: { type: String },
     package: {

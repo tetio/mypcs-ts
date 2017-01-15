@@ -131,7 +131,7 @@ export function createRandom(next: Function) {
                 for (var j = 0; j < 2; j++) {
                     let good = <Good>{
                         //id: j,
-                        customerRef: `REF${j}`,
+                        ref: `REF${j}`,
                         taricCode: '' + chance.integer({
                             min: 5000000,
                             max: 9999999
@@ -156,7 +156,7 @@ export function createRandom(next: Function) {
                 // split_goods_placement
                 for (var k = 0; k < numEquip; k++) {
                     let sgp = <SplitGoodsPlacement>{
-                        // customerRef: shipment.goods[k%2].customerRef,
+                        goodRef: shipment.goods[k%2].ref,
                         equipmentNumber: exportFile.equipments[k].number,
                         packageQuantity: (k + 20),
                         grossWeight: (22000 + (k + 20) * 10)
