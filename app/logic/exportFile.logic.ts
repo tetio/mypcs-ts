@@ -5,6 +5,7 @@ import { ObjectID } from "mongodb";
 
 import { ExportFile, ExportFileDao, BookingInfo } from '../models/exportFile';
 import { Company, CompanyDao } from '../models/company';
+import { Attachment, AttachmentDao } from '../models/attachment';
 import { Equipment, EquimentEvents } from '../models/equipment';
 import { SplitGoodsPlacement } from '../models/splitGoodsPlacement';
 import { Shipment } from '../models/shipment';
@@ -156,7 +157,7 @@ export function createRandom(next: Function) {
                 // split_goods_placement
                 for (var k = 0; k < numEquip; k++) {
                     let sgp = <SplitGoodsPlacement>{
-                        goodRef: shipment.goods[k%2].ref,
+                        goodRef: shipment.goods[k % 2].ref,
                         equipmentNumber: exportFile.equipments[k].number,
                         packageQuantity: (k + 20),
                         grossWeight: (22000 + (k + 20) * 10)
@@ -212,14 +213,28 @@ export function addEquipment(payload: EquipmentPayload, next: Function) {
 export function removeEquipment(payload: EquipmentPayload, next: Function) {
     let objectId = new ObjectID(payload.exportFileId);
     let query = { _id: objectId };
-    let update = { 
-        $pull: { 
-          equipments: { number: payload.equipment.number },
-          splitGoodsPlacement: { equipmentNumber: payload.equipment.number } 
-        } 
+    let update = {
+        $pull: {
+            equipments: { number: payload.equipment.number },
+            splitGoodsPlacement: { equipmentNumber: payload.equipment.number }
+        }
     };
-    ExportFileDao.update(query, update, {'multi': true}, (error: any, exportFile: ExportFile) => {
+    ExportFileDao.update(query, update, { 'multi': true }, (error: any, exportFile: ExportFile) => {
         next(error, exportFile);
+    });
+};
+
+
+export function addAttachment(exportFileId: string, shipmentId: string, fileType: string, buffer64: string, next: Function) {
+    let attachment = new AttachmentDao();
+    attachment.file.contentType = fileExtension2contentType(fileType);
+    attachment.file.data = buffer64;
+    attachment.uploadedOn = new Date();
+    attachment.save((err: any) => {
+        if (err) {
+            next(err);
+        }
+        next(null, {result:'OK'});
     });
 };
 
@@ -247,3 +262,23 @@ function findOneCompany(count: number) {
         });
     });
 }
+
+
+function fileExtension2contentType(fileExtension: string): string {
+    let contentType = 'text/plain';
+    if (fileExtension.toLocaleUpperCase() === 'PDF') {
+        contentType = 'application/pdf';
+    } else if (fileExtension.toLocaleUpperCase() === 'JPG' || fileExtension.toLocaleUpperCase() === 'JPEG') {
+        contentType = 'image/jpeg';
+    } else if (fileExtension.toLocaleUpperCase() === 'DOC') {
+        contentType = 'application/msword';
+    } else if (fileExtension.toLocaleUpperCase() === 'DOCX') {
+        contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    } else if (fileExtension.toLocaleUpperCase() === 'XLS') {
+        contentType = 'application/vnd.ms-excel';
+    } else if (fileExtension.toLocaleUpperCase() === 'XLSX') {
+        contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    }
+    return contentType;
+}
+

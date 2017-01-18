@@ -60,14 +60,12 @@ router.delete('/equipment', (req: Request, res: Response) => {
 });
 
 router.post('/shipment/attachment', upload.single('attachment'), (req: Request, res: Response) => {
-    let shipmentId =  req.body.shipmentId;
-    let exportFileId =  req.body.exportFileId;
     if (req.file.buffer) {
+        let shipmentId =  req.body.shipmentId;
+        let exportFileId =  req.body.exportFileId;
+        let contentType = req.file.originalname.split('.').slice(-1)[0]; // gets the extension of the file
         let buffer64 = req.file.buffer.toString('base64');
-        // TODO store file into mongodb
-        Controller.handleResult(res, null, 'OK');
-    } else {
-        Controller.handleResult(res, 'No file uploaded', 'KO');
+        ExportFileLogic.addAttachment(exportFileId, shipmentId, contentType, buffer64, Controller.handleResult.bind(null, res));
     }
 });
 
