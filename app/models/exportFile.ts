@@ -31,9 +31,8 @@ interface ExportFile {
     haulier: Company;
     bookingInfo: BookingInfo;
     freightForwarderInfo: FreightForwarderInfo;
-    equipments: [Equipment],
-    shipments: [Shipment],
-    
+    equipments: Equipment[],
+    shipments: Shipment[]
 }
 
 interface ExportFileModel extends ExportFile, mongoose.Document { };
@@ -42,13 +41,13 @@ let BookingInfoSchema: mongoose.Schema = new mongoose.Schema({
     bookingNumber: { type: String, required: true },
     requestedOn: { type: Date, required: false },
     notifiedOn: { type: Date, required: false }
-});
+}, { _id: false });
 
 
 let FreightForwarderInfoSchema: mongoose.Schema = new mongoose.Schema({
     dossierReference: { type: String, required: false },
     bookingObservations: { type: String, required: false }
-});
+}, { _id: false });
 
 
 let ExportFileSchema: mongoose.Schema = new mongoose.Schema({

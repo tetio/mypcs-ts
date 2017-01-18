@@ -21,7 +21,7 @@ interface Equipment {
     number: string;
     reference: string;
     type: string;
-    seals: [string];
+    seals: string[];
     unitGrossWeight: string;
     totalGrossWeight: number;
     unitNetWeight: string;

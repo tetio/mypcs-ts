@@ -26,7 +26,7 @@ interface Good {
     totalGrossWeight?: number;
     unitNetWeight: string;
     totalNetWeight: number;    
-    marks: [string];
+    marks: string[];
     temperature?: GoodTemperature;
     volume?: GoodVolume;
     situation: string;

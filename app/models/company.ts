@@ -16,7 +16,7 @@ interface Company {
     situation: string;
     lastModification: Date;
     primaryContact: PrimaryContact;
-    users?: [string]
+    users?: string[]
 }
 
 interface PrimaryContact {

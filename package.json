@@ -18,12 +18,14 @@
     "@types/express": "^4.0.32",
     "@types/lodash": "^4.14.34",
     "@types/mongoose": "^4.5.33",
-    "body-parser": "^1.15.2",
+    "@types/multer": "0.0.32",
     "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
     "chance": "^1.0.4",
     "express": "^4.14.0",
     "lodash": "^4.17.3",
     "mongoose": "^4.5.3",
+    "multer": "^1.2.1",
     "typescript": "^2.0.2"
   }
 }

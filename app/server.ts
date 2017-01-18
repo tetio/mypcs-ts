@@ -1,11 +1,13 @@
 import * as express from 'express';
 
+
 import { WelcomeController, CompanyController, ExportFileController } from './controllers';
 import { config } from "./config";
 
 import mongoose = require('mongoose');
 
 const app: express.Application = express();
+app.use('/static', express.static('public'))
 
 const port: number = process.env.PORT || 3000;
 

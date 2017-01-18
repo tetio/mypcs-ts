@@ -16,7 +16,7 @@ interface Shipment {
   updatedAt?: Date;
   createdBy: string;
   updatedBy?: string;
-  goods: [Good],
+  goods: Good[],
   splitGoodsPlacement?: [SplitGoodsPlacement];    
 }
 
@@ -36,7 +36,7 @@ let ShipmentSchema: mongoose.Schema = new mongoose.Schema({
   updatedBy: { type: String, required: false },
   goods: { type: [GoodSchema], required: true },
   splitGoodsPlacement: { type: [SplitGoodsPlacementSchema], required: true }
-});
+}, { _id: false });
 
 
 export { Shipment, ShipmentSchema };

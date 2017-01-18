@@ -5,7 +5,7 @@ interface User {
   username: string,
   createdOn: Date,
   companyId: string;
-  roles: [UserAppRole];
+  roles: UserAppRole[];
 }
 
 

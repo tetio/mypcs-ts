@@ -6,7 +6,7 @@ interface Application {
   description: string,
   createdOn: Date,
   createdById: string;
-  roles: [ApplicationRole];
+  roles: ApplicationRole[];
 }
 
 
