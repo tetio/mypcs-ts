@@ -49,7 +49,15 @@ export function findByCriteria(criteria: CriteriaExportFile, next: Function) {
             $gt: criteria.since
         }
     }
-    ExportFileDao.find(queryCriteria).limit(10).exec((err: any, exportFiles: [ExportFile]) => {
+    let projection = {
+        'fileOwner': 1, 
+        'modifiedAt':1, 
+        'bookingInfo.bookingNumber': 1,
+        'shipper.name': 1,
+        'containerTerminal.name': 1,
+        'freightForwarder.name': 1
+     }
+    ExportFileDao.find(queryCriteria, projection).limit(10).exec((err: any, exportFiles: [ExportFile]) => {
         next(err, exportFiles);
     });
 }
