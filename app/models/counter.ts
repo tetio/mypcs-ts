@@ -14,4 +14,5 @@ let CounterSchema: mongoose.Schema = new mongoose.Schema({
 });
 
 let CounterDao = mongoose.model<CounterModel>('Counter', CounterSchema);
+
 export { Counter, CounterDao }

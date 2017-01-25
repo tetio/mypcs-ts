@@ -1,6 +1,6 @@
 import * as Chance from "chance";
 
-import { Company, CompanyDao, PrimaryContact } from '../models/company';
+import { Company, CompanyDao, PrimaryContact } from '../models';
 
 
 export function findById(id: String, next: Function) {
@@ -21,7 +21,7 @@ export function create(next: Function) {
 }
 
 
-function createCompany(next) {
+function createCompany(next: Function) {
     let chance = new Chance();
     let company = new CompanyDao();
     company.code = chance.state() + chance.zip();
