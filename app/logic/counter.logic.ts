@@ -2,7 +2,7 @@ import * as Chance from "chance";
 import * as Promise from "bluebird";
 import { ObjectID } from "mongodb";
 
-import { Counter, CounterDao } from "../models";
+import { Counter, CounterDao } from "../models/counter";
 
 
 export function create(name: string, next: Function) {
