@@ -10,6 +10,7 @@ import { Equipment, EquimentEvents } from '../models/equipment';
 import { SplitGoodsPlacement } from '../models/splitGoodsPlacement';
 import { Shipment } from '../models/shipment';
 import { Good, GoodPackage } from '../models/good';
+import { nextValue } from './counter.logic';
 
 
 export interface CriteriaExportFile {
@@ -50,13 +51,13 @@ export function findByCriteria(criteria: CriteriaExportFile, next: Function) {
         }
     }
     let projection = {
-        'fileOwner': 1, 
-        'modifiedAt':1, 
+        'fileOwner': 1,
+        'modifiedAt': 1,
         'bookingInfo.bookingNumber': 1,
         'shipper.name': 1,
         'containerTerminal.name': 1,
         'freightForwarder.name': 1
-     }
+    }
     ExportFileDao.find(queryCriteria, projection).limit(10).exec((err: any, exportFiles: [ExportFile]) => {
         next(err, exportFiles);
     });
@@ -77,15 +78,21 @@ export function find(next: Function) {
 
 
 export function create(fileOwner: string, bookingNumber: string, next: Function) {
-    let exportFile = new ExportFileDao();
-    exportFile.fileOwner = fileOwner;
-    exportFile.createdAt = new Date();
-    exportFile.modifiedAt = exportFile.createdAt;
-    exportFile.bookingInfo.bookingNumber = bookingNumber;
-    exportFile.save((err: any, exportFile: ExportFile) => {
-        next(err, exportFile);
+    Promise.join(newExportFileId(), (counterValue: number) => {
+        let exportFile = new ExportFileDao();
+        let now = new Date();
+        let currentYear = now.getFullYear();
+        exportFile.code = `EF-${currentYear}-${counterValue}`.replace(/\s+/g, '');
+        exportFile.version = 0;
+        exportFile.fileOwner = fileOwner;
+        exportFile.createdAt = new Date();
+        exportFile.modifiedAt = exportFile.createdAt;
+        exportFile.bookingInfo.bookingNumber = bookingNumber;
+        exportFile.save((err: any, exportFile: ExportFile) => {
+            next(err, exportFile);
+        });
     });
-};
+}
 
 
 
@@ -93,15 +100,19 @@ export function create(fileOwner: string, bookingNumber: string, next: Function)
 export function createRandom(next: Function) {
     let chance = new Chance();
     let exportFile = new ExportFileDao();
+    let now = new Date();
+    let currentYear = now.getFullYear();
     countCompanies().then((count: number) => {
-        Promise.join(findOneCompany(count), findOneCompany(count), findOneCompany(count), findOneCompany(count), findOneCompany(count),
-            (customer: Company, forwarder: Company, shippingAgent: Company, terminal: Company, depot: Company) => {
+        Promise.join(findOneCompany(count), findOneCompany(count), findOneCompany(count), findOneCompany(count), findOneCompany(count), newExportFileId(),
+            (customer: Company, forwarder: Company, shippingAgent: Company, terminal: Company, depot: Company, counterValue: number) => {
 
                 // Agents
                 exportFile.shippingAgent = shippingAgent;
                 exportFile.freightForwarder = forwarder;
                 exportFile.containerTerminal = terminal;
                 exportFile.containerDepot = depot;
+                exportFile.code = `EF-${currentYear}-${counterValue}`.replace(/\s+/g, '');
+                exportFile.version = 0;
 
                 // equipments
                 let numEquip = Math.floor(Math.random() * 4) + 1;
@@ -242,7 +253,7 @@ export function addAttachment(exportFileId: string, shipmentId: string, fileType
         if (err) {
             next(err);
         }
-        next(null, {result:'OK'});
+        next(null, { result: 'OK' });
     });
 };
 
@@ -290,3 +301,6 @@ function fileExtension2contentType(fileExtension: string): string {
     return contentType;
 }
 
+function newExportFileId(): Promise {
+    return nextValue('EF');
+}

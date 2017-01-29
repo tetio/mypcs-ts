@@ -31,3 +31,18 @@ export function reset(name: string, value: number = 0, next: Function) {
         next(err, aCounter);
     });
 }
+
+export function nextValue(name: string): Promise {
+    return new Promise((resolve: Promise.Resolve, reject: Promise.Resolve) => {
+        let query = { name: name };
+        let update = {
+            $inc: { value: 1 }
+        };
+        CounterDao.findOneAndUpdate(query, update, { 'new': true }, (err: any, aCounter: Counter) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(aCounter.value);
+        });
+    });
+}

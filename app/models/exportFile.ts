@@ -16,6 +16,8 @@ interface FreightForwarderInfo {
 }
 
 interface ExportFile {
+    code: string;
+    version: number;
     createdAt: Date;
     modifiedAt: Date;
     fileType: string;
@@ -51,6 +53,8 @@ let FreightForwarderInfoSchema: mongoose.Schema = new mongoose.Schema({
 
 
 let ExportFileSchema: mongoose.Schema = new mongoose.Schema({
+    code: { type: String, required: true },
+    version: { type: Number, required: true },
     createdAt: { type: Date, required: true },
     modifiedAt: { type: Date, required: true },
     fileType: { type: String, required: true },
