@@ -1,7 +1,7 @@
 import * as express from 'express';
 
 
-import { WelcomeController, CompanyController, ExportFileController, CounterController } from './controllers';
+import { WelcomeController, CompanyController, ExportFileController, CounterController, UserController } from './controllers';
 import { config } from "./config";
 
 import mongoose = require('mongoose');
@@ -18,6 +18,7 @@ const apiAdminPrefix = `/api/admin/${apiVersion}`;
 app.use(`${apiPrefix}/welcome`, WelcomeController);
 app.use(`${apiPrefix}/company`, CompanyController);
 app.use(`${apiPrefix}/exportfile`, ExportFileController);
+app.use(`${apiPrefix}/user`, UserController);
 
 app.use(`${apiAdminPrefix}/counter`, CounterController);
 
