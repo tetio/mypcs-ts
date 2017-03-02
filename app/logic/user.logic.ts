@@ -22,7 +22,7 @@ export function authenticate(username: string, password: string, next: Function)
         if (err) {
             next(err);
         } else if (aUser.password == encrypt(password)) {
-            next(null, aUser);
+            next(null, generateToken(aUser));
         } else {
             next(AUTHENTICATION_ERROR);
         }
@@ -34,4 +34,10 @@ function encrypt(password: string): string {
         C.enc.Hex.parse(password),
         C.enc.Hex.parse(config.KEY_ENCRYPTION),
         { mode: C.mode.ECB, padding: C.pad.NoPadding });
+}
+
+function generateToken(user: User): User {
+    // TODO generate JWT
+    user.token = 'TODO';
+    return user;
 }

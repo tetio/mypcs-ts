@@ -6,6 +6,7 @@ interface User {
   createdOn: Date,
   companyId: string,
   password: string,
+  token: string,
   roles: UserAppRole[];
 }
 

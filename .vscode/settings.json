@@ -8,5 +8,5 @@
         "**/.hg": true,
         "**/.DS_Store": true
     },
-    "vsicons.presets.angular": true
+    "vsicons.presets.angular": false
 }

@@ -7,7 +7,7 @@ const OK: number = 200;
 const KO_AUTHENTICATION: number = 403;
 const KO_AUTHORIZATION: number = 401;
 
-export function handleResult(res: Response, error: string, result: any | [any]) {
+export function handleResult(res: Response, error: string, result: any | any[]) {
     if (error) {
         if (error === AUTHENTICATION_ERROR) {
             return res.status(KO_AUTHENTICATION).json({});
