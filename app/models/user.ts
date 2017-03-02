@@ -4,7 +4,9 @@ import mongoose = require('mongoose');
 interface User {
   username: string,
   createdOn: Date,
-  companyId: string;
+  companyId: string,
+  password: string,
+  token: string,
   roles: UserAppRole[];
 }
 
@@ -22,6 +24,7 @@ interface UserModel extends User, mongoose.Document { };
 
 let UserSchema: mongoose.Schema = new mongoose.Schema({
   username: { type: String, required: true },
+  password: { type: String, required: true },
   createdOn: { type: Date, required: true },
   companyId: { type: String, required: true },
   roles: {type: [{

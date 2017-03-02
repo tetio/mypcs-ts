@@ -1,4 +1,5 @@
 let config = {
+  "KEY_ENCRYPTION": "a1d4feef45a90810ffefc1accaa112211a",
   "local": {
     "MONGO_URI": "mongodb://localhost:27017/mypcs",
     "MONGO_OPTIONS": {"db": {"safe": true}}
