@@ -22,11 +22,13 @@ export function create(username: string, companyId: string, password: string, ap
 }
 
 export function authenticate(username: string, password: string, next: Function) {
+
+    //next(null, {'token':'AABBCC0011AABBCC'});
     UserDao.findOne({ username: username }, (err: any, aUser: User) => {
         if (err) {
             next(err);
-        } else if (aUser.password == encrypt(password)) {
-            next(null, {token: generateToken(aUser)});
+        } else if (aUser && aUser.password === encrypt(password).toString()) {
+            next(null, { token: generateToken(aUser) });
         } else {
             next(AUTHENTICATION_ERROR);
         }

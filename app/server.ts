@@ -1,12 +1,13 @@
 import * as express from 'express';
+import * as  bodyParser from 'body-parser';
 
-
-import { WelcomeController, CompanyController, ExportFileController, CounterController, UserController } from './controllers';
+import { WelcomeController, CompanyController, ExportFileController, CounterController, UserController, PicConnController } from './controllers';
 import { config } from "./config";
 
 import mongoose = require('mongoose');
 
 const app: express.Application = express();
+app.use(bodyParser.json({limit: '5mb'}));
 app.use('/static', express.static('public'))
 
 const port: number = process.env.PORT || 3000;
@@ -19,9 +20,9 @@ app.use(`${apiPrefix}/welcome`, WelcomeController);
 app.use(`${apiPrefix}/company`, CompanyController);
 app.use(`${apiPrefix}/exportfile`, ExportFileController);
 app.use(`${apiPrefix}/user`, UserController);
+app.use(`${apiPrefix}/picconn`, PicConnController);
 
 app.use(`${apiAdminPrefix}/counter`, CounterController);
-
 
 app.listen(port, () => {
 

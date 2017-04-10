@@ -7,6 +7,14 @@ import * as UserLogic from '../logic/user.logic';
 const router: Router = Router();
 router.use(bodyParser.json());
 
+router.use((req: Request, res: Response, next: Function) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
+
 router.post('/', (req: Request, res: Response) => {
     let user = req.body;
     UserLogic.create(user.username, user.companyId,
