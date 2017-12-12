@@ -30,5 +30,8 @@
     "mongoose": "^4.5.3",
     "multer": "^1.2.1",
     "typescript": "^2.0.2"
+  },
+  "devDependencies": {
+    "@glimpse/glimpse": "^0.20.9"
   }
 }

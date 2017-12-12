@@ -260,7 +260,7 @@ export function addAttachment(exportFileId: string, shipmentId: string, fileType
 
 function countCompanies() {
     return new Promise((resolve: Promise.Resolve, reject: Promise.Resolve) => {
-        CompanyDao.count({}, function (err, count) {
+        CompanyDao.count({}, (err, count) => {
             if (err) {
                 reject(err);
             }
@@ -273,7 +273,7 @@ function countCompanies() {
 function findOneCompany(count: number) {
     return new Promise((resolve: Promise.Resolve, reject: Promise.Resolve) => {
         let rand = Math.floor(Math.random() * count);
-        CompanyDao.findOne().skip(rand).exec(function (err, company) {
+        CompanyDao.findOne().skip(rand).exec((err, company) => {
             if (err) {
                 reject(err);
             }
