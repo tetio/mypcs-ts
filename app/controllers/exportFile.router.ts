@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import * as bodyParser from "body-parser";
 import * as multer from 'multer';
 
-import * as Controller from './controller';
+import * as Controller from './router.util';
 import * as ExportFileLogic from '../logic/exportFile.logic';
 
 const router: Router = Router();
@@ -29,7 +29,7 @@ router.use(bodyParser.json());
 // });
 
 router.get('/:id', (req: Request, res: Response) => {
-    let {id} = req.params;
+    let { id } = req.params;
     ExportFileLogic.findById(id, Controller.handleResult.bind(null, res));
 });
 
@@ -61,12 +61,12 @@ router.delete('/equipment', (req: Request, res: Response) => {
 
 router.post('/shipment/attachment', upload.single('attachment'), (req: Request, res: Response) => {
     if (req.file.buffer) {
-        let shipmentId =  req.body.shipmentId;
-        let exportFileId =  req.body.exportFileId;
+        let shipmentId = req.body.shipmentId;
+        let exportFileId = req.body.exportFileId;
         let contentType = req.file.originalname.split('.').slice(-1)[0]; // gets the extension of the file
         let buffer64 = req.file.buffer.toString('base64');
         ExportFileLogic.addAttachment(exportFileId, shipmentId, contentType, buffer64, Controller.handleResult.bind(null, res));
     }
 });
 
-export const ExportFileController: Router = router;
+export const ExportFileRouter: Router = router;

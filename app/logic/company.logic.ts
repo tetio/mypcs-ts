@@ -1,10 +1,13 @@
 import * as Chance from "chance";
 
 import { Company, CompanyDao, PrimaryContact } from '../models/company';
+import { Mongoose } from "mongoose";
+import { ObjectID } from "bson";
 
 
-export function findById(id: String, next: Function) {
-    CompanyDao.findById({ _id: id }, (err: any, company: Company) => {
+export function findById(id: string, next: Function) {
+    const _id = new ObjectID(id);
+    CompanyDao.findById({ _id }, (err: any, company: Company) => {
         next(err, company);
     });
 }

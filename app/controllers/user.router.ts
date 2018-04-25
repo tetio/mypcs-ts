@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import * as bodyParser from "body-parser";
 
-import * as Controller from './controller';
+import * as Controller from './router.util';
 import * as UserLogic from '../logic/user.logic';
 
 const router: Router = Router();
@@ -27,4 +27,4 @@ router.post('/authenticate', (req: Request, res: Response) => {
 });
 
 
-export const UserController: Router = router;
+export const UserRouter: Router = router;

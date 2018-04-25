@@ -6,13 +6,13 @@
 import * as express from 'express';
 import * as  bodyParser from 'body-parser';
 
-import { WelcomeController, CompanyController, ExportFileController, CounterController, UserController, PicConnController } from './controllers';
+import { WelcomeRouter, CompanyRouter, ExportFileRouter, CounterRouter, UserRouter, PicConnRouter } from './controllers';
 import { config } from "./config";
 
 import mongoose = require('mongoose');
 
 const app: express.Application = express();
-app.use(bodyParser.json({limit: '5mb'}));
+app.use(bodyParser.json({ limit: '5mb' }));
 app.use('/static', express.static('public'))
 
 let port: number = 3000;
@@ -25,13 +25,13 @@ const apiAdminPrefix = `/api/admin/${apiVersion}`;
 
 
 
-app.use(`${apiPrefix}/welcome`, WelcomeController);
-app.use(`${apiPrefix}/company`, CompanyController);
-app.use(`${apiPrefix}/exportfile`, ExportFileController);
-app.use(`${apiPrefix}/user`, UserController);
-app.use(`${apiPrefix}/picconn`, PicConnController);
+app.use(`${apiPrefix}/welcome`, WelcomeRouter);
+app.use(`${apiPrefix}/company`, CompanyRouter);
+app.use(`${apiPrefix}/exportfile`, ExportFileRouter);
+app.use(`${apiPrefix}/user`, UserRouter);
+app.use(`${apiPrefix}/picconn`, PicConnRouter);
 
-app.use(`${apiAdminPrefix}/counter`, CounterController);
+app.use(`${apiAdminPrefix}/counter`, CounterRouter);
 
 
 if (process.env.PORT) {

@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express'
 import * as bodyParser from "body-parser";
 
-import * as Controller from './controller';
+import * as Controller from './router.util';
 
 
 const router: Router = Router();
@@ -38,4 +38,4 @@ router.post('/dbscript', (req: Request, res: Response) => {
     console.log('inside dbscript OK');
     Controller.handleResult(res, null, { 'status': 'OK' });
 });
-export const PicConnController: Router = router;
+export const PicConnRouter: Router = router;

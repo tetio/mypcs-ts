@@ -55,4 +55,4 @@ let CompanySchema: mongoose.Schema = new mongoose.Schema({
 
 let CompanyDao = mongoose.model<CompanyModel>('Company', CompanySchema, 'company');
 
-export { Company, CompanyDao, CompanyModel, CompanySchema, PrimaryContact };
+export { Company, CompanyDao, PrimaryContact, CompanySchema };

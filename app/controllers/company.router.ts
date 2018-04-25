@@ -1,11 +1,11 @@
 import { Router, Request, Response } from 'express';
-import * as Controller from './controller';
+import * as Controller from './router.util';
 import * as CompanyLogic from '../logic/company.logic';
 
 const router: Router = Router();
 
 router.get('/:id', (req: Request, res: Response) => {
-    let {id} = req.params;
+    let { id } = req.params;
     CompanyLogic.findById(id, Controller.handleResult.bind(null, res));
 });
 
@@ -20,4 +20,4 @@ router.post('/create', (req: Request, res: Response) => {
 });
 
 
-export const CompanyController: Router = router;
+export const CompanyRouter: Router = router;

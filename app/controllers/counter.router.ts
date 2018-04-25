@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express'
 import * as bodyParser from "body-parser";
 
-import * as Controller from './controller';
+import * as Controller from './router.util';
 import * as CounterLogic from '../logic/counter.logic';
 
 const router: Router = Router();
@@ -25,4 +25,4 @@ router.put('/', (req: Request, res: Response) => {
     CounterLogic.reset(payload.counter.name, value, Controller.handleResult.bind(null, res))
 });
 
-export const CounterController: Router = router;
+export const CounterRouter: Router = router;
